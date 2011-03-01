@@ -1,0 +1,108 @@
+@CHARSET "UTF-8";
+
+#main {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	align: center;
+	}
+
+div.charts {
+	margin-right: 310px;
+	width: 740px;
+	top: 0;
+	}
+	
+div.portfolios {
+	float: right;
+	width: 300px;
+	display: inline;
+	}
+	
+hr {
+	width: 600px;
+	color: #CCC;
+	border: 0;
+	height: 1px;
+	background-color: #CCC;
+	text-align: left;
+	margin-left: 0;
+	border-style: solid;
+	}
+	
+canvas {
+	border: 1px solid #CCC;
+	}
+	
+h1 {
+	color: #2B5F14;
+	margin-bottom: 0.1em;
+	}
+	
+h3 {
+	color: #55963C;
+	}
+
+h5 {
+	margin-top: 0.1em;
+	margin-bottom: 0.1em;
+	}
+	
+h3 input {
+	color: inherit;
+	font: inherit;
+	}
+	
+/* General */
+input {
+	border: 1px solid #006;
+    background: inherit;
+	}
+	
+div.pheader {
+	background: green;
+	}
+div.stock {
+	background: lightgreen;
+	}
+	
+/* Stock list */
+
+	
+/* Portfolio Characteristics */
+table.pc {
+	border-collapse:collapse;
+	}
+table.pc th {
+	padding-right: 10px;
+	border-bottom: 1px solid #000;
+	}
+
+
+/* Very Bad */
+span.l1 {
+	color: red;
+	font-weight: bold;
+	}
+/* Bad */
+td.evaluation {
+	text-align: center;
+	}
+
+span.l2 {
+	color: red;
+	font-weight: bolder;
+	}
+/* Normal */
+span.l3 {
+	}
+/* Good */
+span.l4 {
+	color: green;
+	font-weight: bolder;
+	}
+/* Perfect */
+span.l5 {
+	color: green;
+	font-weight: bold;
+	}

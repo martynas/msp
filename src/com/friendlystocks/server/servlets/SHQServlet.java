@@ -2,10 +2,10 @@ package com.friendlystocks.server.servlets;
 
 import java.io.IOException;
 import javax.servlet.*;
-/*import javax.servlet.annotation.WebServlet;*/
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jsr107cache.Cache;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -14,33 +14,37 @@ import com.friendlystocks.server.handlers.SHQHandler;
 /**
  * Servlet implementation class StocksHistoricalQuotes
  */
-/*@WebServlet("/stocks/shq")*/
-public class SHQServlet extends HttpServlet implements Servlet {
+public class SHQServlet extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final String prefix = "SHQServlet-";
+	
 	private SHQHandler handler = new SHQHandler();
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public SHQServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String ticker = request.getParameter(RequestConstants.ticker);
 
 		if (StringUtils.isBlank(ticker))
 			ticker = RequestConstants.defaultTicker;
-
+		
+		String cacheKey = prefix + ticker;
+		String respString;
+		
+		Cache cache = getCache();
+		if (cache != null && cache.containsKey(cacheKey)) {
+			respString = (String)cache.get(cacheKey);
+		} else {
+			respString = handler.getQoutes(ticker); // Generating response
+			if (cache != null)
+				cache.put(cacheKey, respString);
+		}
+		
 		ServletOutputStream output = response.getOutputStream();
-		output.println(handler.getQoutes(ticker));
+		output.println(respString);
 		output.close();
 	}
 

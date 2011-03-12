@@ -2,7 +2,7 @@ package com.friendlystocks.server.servlets;
 
 import java.io.IOException;
 import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
+/*import javax.servlet.annotation.WebServlet;*/
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,7 @@ import com.friendlystocks.server.handlers.SHQHandler;
 /**
  * Servlet implementation class StocksHistoricalQuotes
  */
-@WebServlet("/stocks/shq")
+/*@WebServlet("/stocks/shq")*/
 public class SHQServlet extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 

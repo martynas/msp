@@ -9,6 +9,7 @@ import net.sf.jsr107cache.CacheFactory;
 import net.sf.jsr107cache.CacheManager;
 import javax.servlet.http.HttpServlet;
 
+import com.friendlystocks.server.Constants;
 import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 
 public abstract class AbstractServlet extends HttpServlet {
@@ -21,7 +22,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		Cache cache;
 
         Map props = new HashMap();
-        props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
+        props.put(GCacheFactory.EXPIRATION_DELTA, Constants.qoutesCacheExp);
 
         try {
             CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();

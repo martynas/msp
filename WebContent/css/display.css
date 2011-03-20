@@ -54,9 +54,9 @@ h3 input {
 	}
 	
 /* General */
-input {
+input[type="text"], input[type="button"] {
 	border: 1px solid #006;
-    background: inherit;
+	background: inherit;
 	}
 	
 div.pheader {

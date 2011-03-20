@@ -1,0 +1,15 @@
+<div id="prototypes" style="display:none" >
+	<div class="portfolio">
+		<div class="pheader"><input type="text" class="invisible" value="My Portfolio 1"/></div>
+	</div>
+	<div class="stock">
+		<input type="image" alt="Remove" src="img/delete12.gif" name="delete"
+			onclick="onButtonClick(this); return false;">
+		<input type="checkbox" class="show" onclick="onCheckboxClick(this)"/>
+		<span class="ticker">-</span>
+		<img src="img/busy.gif" alt="busy" style="display:none" class="busy" />
+		<input type="text" name="amount" size=5 value="100" 
+			onchange="onInputValueChange(this)" 
+			onkeyup="onInputKeyUp(this)" />
+	</div>
+</div>

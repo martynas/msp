@@ -16,12 +16,16 @@ public class CSVData {
 	private String[] header;
 	private ArrayList<String[]> dataLines = new ArrayList<String[]>();
 
-	public CSVData(InputStream inputStream) throws IOException {
+	public CSVData(InputStream inputStream) throws IOException, DataException {
 
 		BufferedReader dataInputStream = new BufferedReader(
 				new InputStreamReader(inputStream));
 
 		header = dataInputStream.readLine().split(Constants.fieldSeparator);
+		
+		if (header[0].startsWith("<")) {
+			throw new DataException(Constants.exWrongQuote);
+		}
 
 		String line;
 		while ((line = dataInputStream.readLine()) != null) {

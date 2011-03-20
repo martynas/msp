@@ -7,11 +7,25 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 		<script type="text/javascript" src="js/prototype.js"></script>
-		<script type="text/javascript" src="js/types.js"></script>
-		<script type="text/javascript" src="js/logic.js"></script>
+		<script type="text/javascript" src="main-js.jsp"></script>
 		<script type="text/javascript" src="js/tests.js"></script>
 		<link rel="stylesheet" type="text/css" media="screen,all" href="css/display.css" />
-		<title>My Stocks Portfolio</title>
+		<title>MSP Index Page</title>
+		
+		<!-- Google Analytics -->
+		<!-- 
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-22008680-1']);
+		  _gaq.push(['_trackPageview']);
+		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+		 -->
 	</head>
 <body onload="onLoad()">
 	
@@ -85,15 +99,6 @@
 		</div>
 	</div>
 	
-	<div id="prototypes" style="display:none" >
-		<div class="portfolio">
-			<div class="pheader"><input class="invisible" value="My Portfolio 1"/></div>
-		</div>
-		<div class="stock">
-			<input type="checkbox" class="show" checked="checked" onclick="onCheckboxClick(this)"/>
-			<span class="ticker">-</span>
-			<img src="img/busy.gif" alt="busy" style="display:none" class="busy" />
-		</div>
-	</div>
+	<%@ include file="WEB-INF/jsp-comp/prototypes.html" %>
 </body>
 </html>

@@ -9,6 +9,7 @@ import net.sf.jsr107cache.Cache;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.friendlystocks.server.exceptions.AbstractException;
 import com.friendlystocks.server.handlers.SHQHandler;
 
 /**
@@ -34,18 +35,22 @@ public class SHQServlet extends AbstractServlet {
 		String cacheKey = prefix + ticker;
 		String respString;
 		
-		Cache cache = getCache();
-		if (cache != null && cache.containsKey(cacheKey)) {
-			respString = (String)cache.get(cacheKey);
-		} else {
-			respString = handler.getQoutes(ticker); // Generating response
-			if (cache != null)
-				cache.put(cacheKey, respString);
-		}
-		
-		ServletOutputStream output = response.getOutputStream();
-		output.println(respString);
-		output.close();
+		try {
+			Cache cache = getCache();
+			if (cache != null && cache.containsKey(cacheKey)) {
+				respString = (String)cache.get(cacheKey);
+			} else {
+				respString = handler.getQoutes(ticker); // Generating response
+				if (cache != null)
+					cache.put(cacheKey, respString);
+			}
+			
+			ServletOutputStream output = response.getOutputStream();
+			output.println(respString);
+			output.close();
+		} catch (AbstractException ex) {
+			throw new IOException(ex.getMessage()); // re-throwing as IOException
+		};
 	}
 
 }

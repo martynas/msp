@@ -6,4 +6,8 @@ public final class Constants {
 
 	public static String newLineSeparator = "\n";
 	public static String fieldSeparator = ",";
+	
+	public static int qoutesCacheExp = 60 * 60 * 12; // 12 hours
+	
+	public static String exWrongQuote = "No such quote";
 }

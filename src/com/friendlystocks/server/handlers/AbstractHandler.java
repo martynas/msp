@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.friendlystocks.server.exceptions.DataException;
+
 public abstract class AbstractHandler {
 	
 	/* General procedure for handling exceptions */
@@ -11,7 +13,7 @@ public abstract class AbstractHandler {
 		return e.getStackTrace().toString();
 	}
 	
-	protected CSVData getDataFromURL(String sUrl) throws IOException {
+	protected CSVData getDataFromURL(String sUrl) throws IOException, DataException {
 		InputStream inputStream = null;
 
 		try {

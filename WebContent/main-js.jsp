@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/javascript; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ include file="WEB-INF/js/math.js" %>
+<%@ include file="WEB-INF/js/extensions.js" %>
 
 <%@ include file="WEB-INF/js/Constants.js" %>
 <%@ include file="WEB-INF/js/MainApp.js" %>

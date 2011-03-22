@@ -13,6 +13,7 @@
 		<title>MSP Index Page</title>
 		
 		<!-- Google Analytics -->
+		<!--
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-22008680-1']);
@@ -24,6 +25,7 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 		</script>
+		-->
 	</head>
 <body onload="onLoad()">
 	
@@ -80,8 +82,10 @@
 		</div>
 		<div id="content-wrapper">
 			<div class="portfolios">
-				<input type="text" id="ticker" size=10 value="GOOG" />  
-				<input type="button" title="labas" value="Add" onclick="testAjax();" />
+				<form onsubmit="testAjax(); return false;">
+					<input type="text" id="ticker" size=10 value="GOOG" autofocus />  
+					<input type="submit" title="labas" value="Add" />
+				</form>
 				<div id="phPortfolios"></div>
 			</div>
 			<div class="charts">

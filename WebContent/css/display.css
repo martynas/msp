@@ -54,7 +54,7 @@ h3 input {
 	}
 	
 /* General */
-input[type="text"], input[type="button"] {
+input[type="text"], input[type="button"], input[type="submit"] {
 	border: 1px solid #006;
 	background: inherit;
 	}

@@ -3,5 +3,5 @@
  */
 
 function testAjax() {
-	mainapp.getDefaultPortfolio().addStockByTicker($(ticker).value);
+	mainapp.getDefaultPortfolio().addStockByTicker($('ticker').value);
 }

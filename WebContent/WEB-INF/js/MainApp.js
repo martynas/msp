@@ -24,7 +24,7 @@ var MainApp = Class.create({
 		this.ts = new TimeScale();
 		
 		this.phPortfolios = $(s_phPortfoliosPath); // Place holder for list of stocks
-		this.stockChart = new LinearChart(stockChart, this);
+		this.stockChart = new LinearChart('stockChart', this);
 		
 		this.createPortfolio();
 	},
@@ -70,6 +70,7 @@ var TimeScale = Class.create({
 				this.x.push(new Date(year, month, 1, 0, 0, 0, 0));
 		}
 		
+		this.timeStart = 0; // Time since when we have quotes for all positions. Index of this.x
 	},
 	
 	/* Converts Historical Qoutes from JSON to global Time Scale */

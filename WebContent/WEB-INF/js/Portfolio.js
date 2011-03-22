@@ -50,16 +50,23 @@ var Portfolio = Class.create({
 	calculate : function() {
 		var ts = this.getTimeScale();
 		
+		var t = new Array(); // finding time when first quote is available for each stock
+		for(j = 0; j < this.stocks.length; j++)
+			t.push((this.stocks[j].amount == 0)? 0 : ts.x.length-1);
+		
 		var pvalue = new Array(); /* change of total portfolio value */
 		for(i = 0; i < ts.x.length; i++) {
 			var v = 0;
 			for(j = 0; j < this.stocks.length; j++) {
 				var s = this.stocks[j];
-				if (s.quotes.length > i)
+				if (s.quotes.length > i && s.quotes[i] > 0) {
 					v += s.quotes[i] * s.amount;
+					t[j] = Math.min(t[j], i);
+				}
 			}
 			pvalue.push(v);
 		}
+		ts.timeStart = t.max();
 		
 		this.sPortfolioValue.setSeries(pvalue);
 	},

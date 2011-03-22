@@ -127,8 +127,9 @@ var StockGraphics = Class.create({
 	},
 	
 	onInputValueChange : function(input) {
-		/* TODO: validate input */
-		this.stock.setAmount(input.value);
+		var value = input.value;
+		if (isFinite(value)) /* Validating input */
+			this.stock.setAmount(value);
 	},
 	
 	onInputKeyUp : function(input) {

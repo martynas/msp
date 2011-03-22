@@ -64,15 +64,6 @@ Array.prototype.sortNumber = function(a) {
 	}
 };
 
-Array.prototype.remove = function(a) {
-	for(i = 0; i < this.length; i++) {
-		if (this[i] == a) {
-			this.splice(i, 1);
-			break;
-		}
-	}
-};
-
 function normsinv(g) {
 	var m = new Array(-39.69683028665376, 220.9460984245205,
 			-275.9285104469687, 138.357751867269, -30.66479806614716,

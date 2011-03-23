@@ -82,14 +82,14 @@
 		</div>
 		<div id="content-wrapper">
 			<div class="portfolios">
-				<form onsubmit="testAjax(); return false;">
+				<form onsubmit="addStockByTicker(); return false;">
 					<input type="text" id="ticker" size=10 value="GOOG" autofocus />  
 					<input type="submit" title="labas" value="Add" />
 				</form>
 				<div id="phPortfolios"></div>
 			</div>
 			<div class="charts">
-				<canvas id="stockChart" width="650px" height="200">
+				<canvas id="stockChart" width="650px" height="300">
 					Empty
 				</canvas>
 			</div>

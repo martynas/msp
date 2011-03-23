@@ -7,7 +7,7 @@ var ColorManager = Class.create({
 	
 	getColor : function() {
 		var c = this.colors[this.i];
-		this.i = (this.i+1)%this.colors.length;
+		this.i = (this.i + 1) % this.colors.length;
 		return c;
 	}
 	
@@ -62,15 +62,34 @@ var TimeScale = Class.create({
 	
 	initialize : function() {
 		this.x = new Array();
+		this.xNumber = new Array();
+		this.todayIndex = 0;
 		
 		var today = new Date();
-		for(year = 1995; year <= today.getFullYear(); year++) {
-			var toMonth = (year == today.getFullYear()? today.getMonth() : 12);
-			for(month = 0; month < toMonth; month++)
-				this.x.push(new Date(year, month, 1, 0, 0, 0, 0));
+		var toYear = today.getFullYear() + 10;
+		for(year = 1995; year <= toYear; year++) {
+			var toMonth = (year == toYear? today.getMonth() : 12);
+			for(month = 0; month < toMonth; month++) {
+				var v = new Date(year, month, 1, 0, 0, 0, 0);
+				this.x.push(v);
+				this.xNumber.push(v.getTime());
+				
+				if (today.getFullYear() == year && today.getMonth == month)
+					this.todayIndex = this.x.length;
+			}
 		}
 		
 		this.timeStart = 0; // Time since when we have quotes for all positions. Index of this.x
+		this.timeEnd = Math.round(this.x.length * 0.8);
+		this.currentTime = Math.round(this.x.length * 0.4); // Imaginary Current date which can be in the past also
+	},
+	
+	dateIndex : function(date) { // Currently very approximate function
+		return Math.round((date.getTime() - this.xNumber[0]) / (30.4 * 1000 * 60 * 60 * 24));
+	},
+	
+	todayIndex : function() {
+		return this.todayIndex;
 	},
 	
 	/* Converts Historical Qoutes from JSON to global Time Scale */

@@ -2,10 +2,13 @@
     pageEncoding="ISO-8859-1"%>
 <%@ include file="WEB-INF/js/math.js" %>
 <%@ include file="WEB-INF/js/extensions.js" %>
+<%@ include file="WEB-INF/js/Statistics.js" %>
+
 
 <%@ include file="WEB-INF/js/Constants.js" %>
 <%@ include file="WEB-INF/js/MainApp.js" %>
 <%@ include file="WEB-INF/js/Charts.js" %>
+<%@ include file="WEB-INF/js/LinearChart.js" %>
 <%@ include file="WEB-INF/js/Portfolio.js" %>
 <%@ include file="WEB-INF/js/Stock.js" %>
 

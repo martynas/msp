@@ -25,6 +25,8 @@ var GeneralChart = Class.create({
 		this.mainapp = mainapp;
 		this.canvas = $(canvasId);
 		this.series = new Hash();
+		this.components = new Array();
+		this.createComponents();
 		
 		this.draw();
 	},
@@ -33,15 +35,23 @@ var GeneralChart = Class.create({
 		
 	},
 	
+	createComponents : function() { },
+	
+	drawComponents : function(drawStage) {
+		for (var i = 0; i < this.components.length; i++) {
+			var c = this.components[i];
+			if (c.drawStage == drawStage)
+				c.draw();
+		}
+	},
+	
 	draw : function() {
 		this.recalcCoordinates();
 		this.canvas.width = this.canvas.width; // clear the canvas
 		
+		this.drawComponents(CCDrawStage.Early);
 		this.drawChart();
-		
-		this.drawAxis();
-		this.writeXAxisLabels();
-		this.writeYAxisLabels();
+		this.drawComponents(CCDrawStage.Late);
 	},
 	
 	addSeries : function(chartSeries) {
@@ -76,31 +86,63 @@ var GeneralChart = Class.create({
 	
 	yFromCanvas : function(y) {
 		return this.maxy - (y - c_yMargin) * (this.maxy - this.miny) / (this.canvas.height - 2 * c_yMargin);
+	}
+	
+});
+
+var CCDrawStage = {
+	Early: 0,
+	Late: 1
+};
+
+var ChartComponent = Class.create({
+	
+	initialize : function(chart) {
+		this.chart = chart;
+		this.drawStage = CCDrawStage.Early;
+	},
+	
+	draw : function() {}
+	
+});
+
+var AxisCC = Class.create(ChartComponent, {
+	
+	initialize : function($super, chart) {
+		$super(chart);
+		this.drawStage = CCDrawStage.Late;
+	},
+	
+	draw : function() {
+		this.drawAxis();
+		this.writeXAxisLabels();
+		this.writeYAxisLabels();
 	},
 	
 	drawAxis : function() {
-		var canvas = this.canvas.getContext('2d');
+		var canvas = this.chart.canvas;
+		var context = canvas.getContext('2d');
 		
-		canvas.beginPath();
+		context.beginPath();
 		// X axis
-		var y = this.yOnCanvas(Math.max(0, this.miny));
-		canvas.moveTo(0, y);
-		canvas.lineTo(this.canvas.width, y);
-		canvas.lineTo(this.canvas.width - c_ArrowL, y - c_ArrowW);
-		canvas.moveTo(this.canvas.width, y);
-		canvas.lineTo(this.canvas.width - c_ArrowL, y + c_ArrowW);
+		var y = this.chart.yOnCanvas(Math.max(0, this.chart.miny));
+		context.moveTo(0, y);
+		context.lineTo(canvas.width, y);
+		context.lineTo(canvas.width - c_ArrowL, y - c_ArrowW);
+		context.moveTo(canvas.width, y);
+		context.lineTo(canvas.width - c_ArrowL, y + c_ArrowW);
 		
 		// Y axis
-		var x = this.xOnCanvas(Math.max(0, this.minx))
-		canvas.moveTo(x, this.canvas.height);
-		canvas.lineTo(x, 0);
-		canvas.lineTo(x + c_ArrowW, 0 + c_ArrowL);
-		canvas.moveTo(x, 0);
-		canvas.lineTo(x - c_ArrowW, 0 + c_ArrowL);
+		var x = c_yAxisMargin + 0.5;
+		context.moveTo(x, canvas.height);
+		context.lineTo(x, 0);
+		context.lineTo(x + c_ArrowW, 0 + c_ArrowL);
+		context.moveTo(x, 0);
+		context.lineTo(x - c_ArrowW, 0 + c_ArrowL);
 		
-		canvas.strokeStyle = c_AxisColor;
-		canvas.lineWidth = 1;
-		canvas.stroke();
+		context.strokeStyle = c_AxisColor;
+		context.lineWidth = 1;
+		context.stroke();
 	},
 	
 	formatXAxisLabel : function(value) {
@@ -112,124 +154,65 @@ var GeneralChart = Class.create({
 	},
 	
 	writeXAxisLabels : function() {
-		var canvas = this.canvas.getContext('2d');
-		canvas.beginPath();
+		var canvas = this.chart.canvas;
+		var context = canvas.getContext('2d');
+		
+		context.beginPath();
 		
 		// Writing labels on X Axis
-		canvas.textAlign = "center";
-		canvas.textBaseline = "middle";
-		canvas.font = c_LabelFont;
-		canvas.lineWidth = 1;
-		canvas.fillStyle = canvas.strokeStyle = c_LabelColor;
+		context.textAlign = "center";
+		context.textBaseline = "middle";
+		context.font = c_LabelFont;
+		context.lineWidth = 1;
+		context.fillStyle = context.strokeStyle = c_LabelColor;
 	
-		var y = this.yOnCanvas(Math.max(0, this.miny));
+		var y = this.chart.yOnCanvas(Math.max(0, this.chart.miny));
 		var yText = y + c_yMargin / 2;
-		var d = (this.canvas.width / c_XLabelCount);
-		for (i = 1; i < c_XLabelCount; i++) {
+		var d = (canvas.width / c_XLabelCount);
+		for (var i = 1; i < c_XLabelCount; i++) {
 			var x = Math.round(d * i + d/2) + 0.5;
-			canvas.moveTo(x, y);
-			canvas.lineTo(x, y + c_ArrowW);
+			context.moveTo(x, y);
+			context.lineTo(x, y + c_ArrowW);
 			
-			canvas.fillText(this.formatXAxisLabel(this.xFromCanvas(x)), x, yText);
+			context.fillText(this.formatXAxisLabel(this.chart.xFromCanvas(x)), x, yText);
 		}
 		
-		canvas.textAlign = "right";
-		canvas.textBaseline = "bottom";
-		canvas.fillText('time', this.canvas.width - c_ArrowL, y - c_ArrowW);
+		context.textAlign = "right";
+		context.textBaseline = "bottom";
+		context.fillText('time', canvas.width - c_ArrowL, y - c_ArrowW);
 		
-		canvas.stroke();
+		context.stroke();
 	},
 	
 	writeYAxisLabels : function() {
-		var canvas = this.canvas.getContext('2d');
-		canvas.beginPath();
+		var canvas = this.chart.canvas;
+		var context = canvas.getContext('2d');
+		
+		context.beginPath();
 		
 		// Writing labels on X Axis
-		canvas.textAlign = "right";
-		canvas.textBaseline = "middle";
-		canvas.font = c_LabelFont;
-		canvas.lineWidth = 1;
-		canvas.fillStyle = canvas.strokeStyle = c_LabelColor;
+		context.textAlign = "right";
+		context.textBaseline = "middle";
+		context.font = c_LabelFont;
+		context.lineWidth = 1;
+		context.fillStyle = context.strokeStyle = c_LabelColor;
 		
-		var x = this.xOnCanvas(Math.max(0, this.minx));
+		var x = c_yAxisMargin;
 		var xText = x - c_ArrowW * 2;
-		var d = (this.canvas.height / c_YLabelCount);
-		for (i = 0; i < c_YLabelCount - 1; i++) {
+		var d = (canvas.height / c_YLabelCount);
+		for (var i = 0; i < c_YLabelCount - 1; i++) {
 			y = Math.round(d * i + d/2) + 0.5;
-			canvas.moveTo(x, y);
-			canvas.lineTo(x - c_ArrowW, y);
+			context.moveTo(x, y);
+			context.lineTo(x - c_ArrowW, y);
 			
-			canvas.fillText(this.formatYAxisLabel(this.yFromCanvas(y)), xText, y);
+			context.fillText(this.formatYAxisLabel(this.chart.yFromCanvas(y)), xText, y);
 		}
 		
-		canvas.textAlign = "left";
-		canvas.textBaseline = "middle";
-		canvas.fillText('value', x + c_ArrowW * 2, c_ArrowL);
+		context.textAlign = "left";
+		context.textBaseline = "middle";
+		context.fillText('value', x + c_ArrowW * 2, c_ArrowL);
 		
-		canvas.stroke();
-	}
-	
-});
-
-var LinearChart = Class.create(GeneralChart, {
-	
-	drawChart : function() {
-		var canvas = this.canvas.getContext('2d');
-		var values = this.series.values();
-		var ts = this.getTimeScale();
-		for (i = 0; i < values.length; i++) {
-			var s = values[i];
-			if (s.visible && s.series.length > 0) {
-				canvas.beginPath();
-				canvas.strokeStyle = s.color;
-				canvas.lineWidth = 1;
-				
-				var x = this.xOnCanvas(this.minx);
-				var y = this.yOnCanvas(s.series[0]);
-				canvas.moveTo(x, y);
-				for (j = 1; j < s.series.length; j++) {
-					if (ts.x[j] >= this.minx && ts.x[j] <= this.maxx) {
-						x = this.xOnCanvas(ts.x[j]);
-						y = this.yOnCanvas(s.series[j]);
-						canvas.lineTo(x, y);
-					}
-				}
-				
-				canvas.stroke();
-			}
-		} 
-	},
-	
-	getTimeScale : function() {
-		return this.mainapp.getTimeScale();
-	},
-	
-	recalcCoordinates : function() {
-		var ts = this.getTimeScale();
-		
-		this.minx = ts.x[ts.timeStart];
-		this.maxx = ts.x[ts.x.length-1];
-		this.miny = 0;
-		this.maxy = 0;
-		
-		var values = this.series.values();
-		for (i = 0; i < values.length; i++) {
-			var s = values[i].series;
-			this.miny = Math.min(this.miny, s.min());
-			this.maxy = Math.max(this.maxy, s.max());
-		}
-		
-		this.minx = this.minx.getTime();
-		this.maxx = this.maxx.getTime();
-		if (this.miny == this.maxy) this.maxy += 100;
-	},
-	
-	formatXAxisLabel : function(value) {
-		return (new Date(value)).toShortString();
-	},
-	
-	formatYAxisLabel : function(value) {
-		return Math.round(value);
+		context.stroke();
 	}
 	
 });

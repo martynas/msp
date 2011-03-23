@@ -5,7 +5,7 @@ function onLoad() {
 }
 
 function testInit() {
-	
+	mainapp.getDefaultPortfolio().addStockByTicker('MMM');
 }
 
 
@@ -24,4 +24,8 @@ function onInputKeyUp(inp) {
 
 function onButtonClick(btn) {
 	btn.obj.onButtonClick(btn);
+}
+
+function addStockByTicker() {
+	mainapp.getDefaultPortfolio().addStockByTicker($('ticker').value);
 }

@@ -67,7 +67,7 @@ var TimeScale = Class.create({
 		
 		var today = new Date();
 		var toYear = today.getFullYear() + 10;
-		for(year = 1995; year <= toYear; year++) {
+		for(year = 1990; year <= toYear; year++) {
 			var toMonth = (year == toYear? today.getMonth() : 12);
 			for(month = 0; month < toMonth; month++) {
 				var v = new Date(year, month, 1, 0, 0, 0, 0);

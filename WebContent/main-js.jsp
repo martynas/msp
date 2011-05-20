@@ -3,7 +3,7 @@
 <%@ include file="WEB-INF/js/math.js" %>
 <%@ include file="WEB-INF/js/extensions.js" %>
 <%@ include file="WEB-INF/js/Statistics.js" %>
-
+<%@ include file="WEB-INF/js/EqSolvers.js" %>
 
 <%@ include file="WEB-INF/js/Constants.js" %>
 <%@ include file="WEB-INF/js/MainApp.js" %>

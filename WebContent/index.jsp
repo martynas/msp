@@ -5,15 +5,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<script type="text/javascript" src="js/prototype.js"></script>
 		<script type="text/javascript" src="main-js.jsp"></script>
+		<script type="text/javascript" src="external-js.jsp"></script>
 		<script type="text/javascript" src="js/tests.js"></script>
 		<link rel="stylesheet" type="text/css" media="screen,all" href="css/display.css" />
-		<title>MSP Index Page</title>
+		<title>Friendly Stocks</title>
 		
 		<!-- Google Analytics -->
-		<!--
+		<!-- 
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-22008680-1']);
@@ -25,7 +26,7 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 		</script>
-		-->
+		 -->
 	</head>
 <body onload="onLoad()">
 	

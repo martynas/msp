@@ -10,7 +10,7 @@ import net.sf.jsr107cache.CacheManager;
 import javax.servlet.http.HttpServlet;
 
 import com.friendlystocks.server.Constants;
-import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
+import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 
 public abstract class AbstractServlet extends HttpServlet {
 	private static final long serialVersionUID = 1118087838352100060L;

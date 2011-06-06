@@ -26,6 +26,7 @@ var GeneralChart = Class.create({
 		this.canvas = $(canvasId);
 		this.series = new Hash();
 		this.components = new Array();
+		this.xValues = null;
 		this.createComponents();
 		
 		this.draw();
@@ -33,6 +34,10 @@ var GeneralChart = Class.create({
 	
 	dispose : function() {
 		
+	},
+	
+	setXValues : function(array) {
+		this.xValues = array;
 	},
 	
 	createComponents : function() { },
@@ -66,7 +71,8 @@ var GeneralChart = Class.create({
 		this.draw();
 	},
 	
-	recalcCoordinates : function() { },
+	recalcCoordinates : function() {
+	},
 	
 	drawChart : function() { },
 	
@@ -109,6 +115,9 @@ var ChartComponent = Class.create({
 var AxisCC = Class.create(ChartComponent, {
 	
 	initialize : function($super, chart) {
+		this.c_XLabelCount = c_XLabelCount;
+		this.c_YLabelCount = c_YLabelCount;
+		
 		$super(chart);
 		this.drawStage = CCDrawStage.Late;
 	},
@@ -168,8 +177,8 @@ var AxisCC = Class.create(ChartComponent, {
 	
 		var y = this.chart.yOnCanvas(Math.max(0, this.chart.miny));
 		var yText = y + c_yMargin / 2;
-		var d = (canvas.width / c_XLabelCount);
-		for (var i = 1; i < c_XLabelCount; i++) {
+		var d = (canvas.width / this.c_XLabelCount);
+		for (var i = 1; i < this.c_XLabelCount; i++) {
 			var x = Math.round(d * i + d/2) + 0.5;
 			context.moveTo(x, y);
 			context.lineTo(x, y + c_ArrowW);
@@ -199,8 +208,8 @@ var AxisCC = Class.create(ChartComponent, {
 		
 		var x = c_yAxisMargin;
 		var xText = x - c_ArrowW * 2;
-		var d = (canvas.height / c_YLabelCount);
-		for (var i = 0; i < c_YLabelCount - 1; i++) {
+		var d = (canvas.height / this.c_YLabelCount);
+		for (var i = 0; i < this.c_YLabelCount - 1; i++) {
 			y = Math.round(d * i + d/2) + 0.5;
 			context.moveTo(x, y);
 			context.lineTo(x - c_ArrowW, y);

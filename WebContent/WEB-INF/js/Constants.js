@@ -29,3 +29,6 @@ const c_XLabelCount = 10;
 const c_YLabelCount = 8;
 // Time Lines
 const c_TimeLineColor = 'grey';
+
+// PSD Chart Specific constants
+const psd_c_XLabelCount = 5;

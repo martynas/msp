@@ -7,6 +7,7 @@ var Portfolio = Class.create({
 		this.mainapp = mainapp;
 		this.stocks = new Array();
 		this.series = new Array();
+		this.stat = null;
 		
 		this.sPortfolioValue = new ChartSeries(); /* Portfolio value change */
 		this.addSeries(this.sPortfolioValue);
@@ -49,28 +50,14 @@ var Portfolio = Class.create({
 		this.updateGraphics();
 	},
 	
-	/* Calculates various attributes of the portfolio */
-	calculate : function() {
+	calcGlobalParams : function() {
 		var ts = this.getTimeScale();
 		
-		var t = new Array(); // finding time when first quote is available for each and every stock
-		for(var j = 0; j < this.stocks.length; j++)
-			t.push((this.stocks[j].amount == 0)? 0 : ts.x.length-1);
+		ts.timeStart = 0;
 		
-		var pvalue = new Array(); /*portfolio value within time */
-		for(var i = 0; i < ts.x.length; i++) {
-			var v = 0;
-			for(var j = 0; j < this.stocks.length; j++) {
-				var s = this.stocks[j];
-				if (s.quotes.length > i && s.quotes[i] > 0) {
-					v += s.quotes[i] * s.amount;
-					t[j] = Math.min(t[j], i);
-				}
-			}
-			pvalue.push(v);
-		}
-		ts.timeStart = t.length > 0? t.max() : 0;
-		this.sPortfolioValue.setSeries(pvalue);
+		// Index of a day when quotes available for all stocks
+		for (var i = 0; i < this.stocks.length; i++)
+			ts.timeStart = Math.max(ts.timeStart, this.stocks[i].firstDateI);
 		
 		if (ts.currentTime < ts.timeStart || ts.currentTime > ts.todayIndex) {
 			// currentTime is out of bounds and requires recalculation
@@ -78,23 +65,59 @@ var Portfolio = Class.create({
 			ts.currentTime = ts.dateIndex(new Date(today.getFullYear()-1, today.getMonth(), today.getDay(), 
 					0, 0, 0, 0));
 		}
-			
-		// Analyzing only time between timeStart and currentTime
-		var pvalue1 = pvalue.slice(ts.timeStart, ts.currentTime);
-		var x1 = ts.xNumber.slice(ts.timeStart, ts.currentTime);
-		var stat = new Statistics(x1, pvalue1);
 		
-		var trendLine = new Array();
-		for (var i = 0; i < ts.x.length; i++) {
-			var tl = 0; // Trend Line
-			if (i < ts.startTime) {
-			} else if (i < ts.timeEnd) {
-				tl = stat.trendLineValue(ts.xNumber[i]);
-			}
-			trendLine.push(tl);
+		// Collecting variables
+		var vars = new Array();
+		for (var i = 0; i < this.stocks.length; i++) {
+			var s = this.stocks[i];
+			vars.push(s.quotes.slice(ts.timeStart, ts.timeEnd));
+		};
+		this.varsM = $M(vars);
+
+		// Building Statistics object
+		var x1 = ts.xNumber.slice(ts.timeStart, ts.currentTime + 1);
+		this.stat = new Statistics(x1, this.varsM.minor(1, 1, this.varsM.rows(), ts.currentTime - ts.timeStart + 1));
+		this.stat.calculateStatistics();
+		
+		// Updating PSD Chart Data
+		var psdX = new Array(), psdY = new Array(), p = this.stat.portfolios;
+		for (var i = 0; i < p.length; i++) {
+			// Also transforming month data into Yearly
+			psdX.push(p[i].s * Math.sqrt(12));
+			psdY.push(p[i].mean * 12);
 		}
+		this.mainapp.psdChart.setXValues(psdX);
+		this.mainapp.sPSDValue.setSeries(psdY);
+	},
+	
+	updateQuotesChart : function() {
+		var ts = this.getTimeScale();
 		
+		// Collecting weights
+		var weights = new Array();
+		for (var i = 0; i < this.stocks.length; i++)
+			weights.push(this.stocks[i].amount);
+		this.stat.calculateProduct(weights, 1);
+		
+		// Updating Quotes Chart data
+		var x1 = ts.xNumber.slice(ts.timeStart, ts.timeEnd);
+		this.mainapp.stockChart.setXValues(x1);
+		// Total Portfolio value
+		var pValue = $M(weights).transpose().x(this.varsM).elements[0];
+		this.sPortfolioValue.setSeries(pValue);
+			
+		// Trendline
+		var trendLine = new Array();
+		for (var i = ts.timeStart; i < ts.timeEnd; i++) {
+			trendLine.push(this.stat.trendLineValue(ts.xNumber[i]));
+		}
 		this.sTrendLine.setSeries(trendLine);
+	},
+	
+	/* Calculates various attributes of the portfolio */
+	calculate : function() {
+		this.calcGlobalParams();
+		this.updateQuotesChart();
 	},
 	
 	updateGraphics : function() {

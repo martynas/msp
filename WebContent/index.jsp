@@ -81,16 +81,20 @@
 				</tr>
 			</table>
 		</div>
-		<div id="content-wrapper">
-			<div class="portfolios">
-				<form onsubmit="addStockByTicker(); return false;">
-					<input type="text" id="ticker" size=10 value="GOOG" autofocus />  
-					<input type="submit" title="labas" value="Add" />
-				</form>
+		<div class="portfolios">
+			<form onsubmit="addStockByTicker(); return false;">
+				<input type="text" id="ticker" size=10 value="GOOG" autofocus />  
+				<input type="submit" title="labas" value="Add" />
+			</form>
 				<div id="phPortfolios"></div>
-			</div>
+		</div>
+		<div id="content-wrapper">
+			
 			<div class="charts">
-				<canvas id="stockChart" width="650px" height="300">
+				<canvas id="psdChart" width="300px" height="300">
+					Empty
+				</canvas>
+				<canvas id="stockChart" width="600px" height="300">
 					Empty
 				</canvas>
 			</div>

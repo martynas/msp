@@ -24,9 +24,13 @@ var MainApp = Class.create({
 		this.ts = new TimeScale();
 		
 		this.phPortfolios = $(s_phPortfoliosPath); // Place holder for list of stocks
-		this.stockChart = new LinearChart('stockChart', this);
-		
+		this.stockChart = new QuotesChart('stockChart', this);
 		this.createPortfolio();
+		
+		// Constructing PSD Chart
+		this.psdChart = new PSDChart('psdChart', this);
+		this.sPSDValue = new ChartSeries();
+		this.psdChart.addSeries(this.sPSDValue);
 	},
 	
 	createPortfolio : function() {
@@ -45,6 +49,8 @@ var MainApp = Class.create({
 	
 	portfolioUpdate : function(portfolio) {
 		this.stockChart.draw();
+		if (this.psdChart)
+			this.psdChart.draw();
 	},
 	
 	/* Reports error to a user 

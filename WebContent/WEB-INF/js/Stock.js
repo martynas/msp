@@ -9,6 +9,7 @@ var Stock = Class.create({
 		this.show = false;
 		this.quotes = new Array();
 		this.amount = 100; /* Number of stocks in portfolio */
+		this.firstDateI = null;
 		
 		this.graphics = new StockGraphics(this);
 		
@@ -42,7 +43,9 @@ var Stock = Class.create({
 				return a.Date - b.Date;
 			});
 			
-			this.quotes = this.portfolio.getTimeScale().json2ts(this.fullinfo);
+			var ts = this.getTimeScale();
+			this.firstDateI = ts.dateIndex(new Date(this.fullinfo[0].Date));
+			this.quotes = ts.json2ts(this.fullinfo);
 			this.onChanged();
 			this.graphics.setBusy(false);
 		} else {
@@ -67,8 +70,12 @@ var Stock = Class.create({
 	},
 	
 	setAmount : function(amount) {
-		this.amount = amount;
+		this.amount = parseFloat(amount);
 		this.onChanged();
+	},
+	
+	getTimeScale : function() {
+		return this.portfolio.getTimeScale();
 	}
 	
 });

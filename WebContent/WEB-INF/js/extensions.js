@@ -28,3 +28,11 @@ Array.prototype.remove = function(a) {
 		}
 	}
 };
+
+// Adds n e elements to be begging of an array
+Array.prototype.lpad = function(n, e) {
+	var na = new Array();
+	for (var i = 0; i < n; i++)
+		na.push(e);
+	return na.concat(this);
+};

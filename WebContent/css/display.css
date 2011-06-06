@@ -9,12 +9,11 @@
 
 div.charts {
 	margin-right: 310px;
-	width: 740px;
+	width: 970px;
 	top: 0;
 	}
 	
 div.portfolios {
-	float: right;
 	width: 300px;
 	display: inline;
 	}

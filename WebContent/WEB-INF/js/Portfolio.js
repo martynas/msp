@@ -9,10 +9,10 @@ var Portfolio = Class.create({
 		this.series = new Array();
 		this.stat = null;
 		
-		this.sPortfolioValue = new ChartSeries(); /* Portfolio value change */
+		this.sPortfolioValue = new LinearChartSeries(); /* Portfolio value change */
 		this.addSeries(this.sPortfolioValue);
 		
-		this.sTrendLine = new ChartSeries(); /* Portfolio trend line */
+		this.sTrendLine = new LinearChartSeries(); /* Portfolio trend line */
 		this.addSeries(this.sTrendLine);
 		
 		this.graphics = new PortfolioGraphics(this);
@@ -86,8 +86,14 @@ var Portfolio = Class.create({
 			psdX.push(p[i].s * Math.sqrt(12));
 			psdY.push(p[i].mean * 12);
 		}
+		
+		var psdDots = new Array(), vars = this.stat.vars;
+		for (var i = 0; i < vars.length; i++)
+			psdDots.push({x : vars[i].s * Math.sqrt(12), y : vars[i].mean * 12, label : this.stocks[i].ticker});
+		
 		this.mainapp.psdChart.setXValues(psdX);
 		this.mainapp.sPSDValue.setSeries(psdY);
+		this.mainapp.sPSDDots.setExtendedSeries(psdDots);
 	},
 	
 	updateQuotesChart : function() {

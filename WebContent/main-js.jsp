@@ -13,5 +13,6 @@
 
 <%@ include file="WEB-INF/js/charts/Charts.js" %>
 <%@ include file="WEB-INF/js/charts/LinearChart.js" %>
+<%@ include file="WEB-INF/js/charts/DotChart.js" %>
 <%@ include file="WEB-INF/js/charts/PSDChart.js" %>
 <%@ include file="WEB-INF/js/charts/QuotesChart.js" %>

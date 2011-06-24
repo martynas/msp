@@ -44,8 +44,13 @@ var Stock = Class.create({
 			});
 			
 			var ts = this.getTimeScale();
-			this.firstDateI = ts.dateIndex(new Date(this.fullinfo[0].Date));
+			//this.firstDateI = ts.dateIndex(new Date(this.fullinfo[0].Date));
 			this.quotes = ts.json2ts(this.fullinfo);
+			
+			this.firstDateI = this.quotes.length-1;
+			while (this.firstDateI > 0 && this.quotes[this.firstDateI-1] != null)
+				this.firstDateI--;
+			
 			this.onChanged();
 			this.graphics.setBusy(false);
 		} else {

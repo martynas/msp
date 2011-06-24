@@ -325,6 +325,10 @@ Vector.prototype = {
 		  m.push(row);
 	  }
 	  return $M(m);
+  },
+  
+  concat: function(vector) {
+	  return $V(this.elements.concat(vector.elements));
   }
 };
   
@@ -349,12 +353,16 @@ Vector.Random = function(n) {
 
 // Vector filled with zeros
 Vector.Zero = function(n) {
+  return Vector.Const(n, 0);
+};
+
+// Vector of the same elements
+Vector.Const = function(n, el) {
   var elements = [];
-  do { elements.push(0);
+  do { elements.push(el);
   } while (--n);
   return Vector.create(elements);
 };
-
 
 
 function Matrix() {}

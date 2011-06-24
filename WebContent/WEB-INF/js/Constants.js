@@ -32,3 +32,6 @@ const c_TimeLineColor = 'grey';
 
 // PSD Chart Specific constants
 const psd_c_XLabelCount = 5;
+const pst_dCount = 10;
+
+const psd_c_DotRadius = 5;

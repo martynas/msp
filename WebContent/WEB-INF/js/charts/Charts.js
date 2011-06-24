@@ -12,7 +12,13 @@ var ChartSeries = Class.create({
 
 	setSeries : function(array) {
 		this.series = array;
-	}
+	},
+	
+	setChart: function(chart) {
+		this.chart = chart;
+	},
+	
+	draw : function() {	}
 
 });
 
@@ -55,12 +61,13 @@ var GeneralChart = Class.create({
 		this.canvas.width = this.canvas.width; // clear the canvas
 		
 		this.drawComponents(CCDrawStage.Early);
-		this.drawChart();
+		this.drawSeries();
 		this.drawComponents(CCDrawStage.Late);
 	},
 	
 	addSeries : function(chartSeries) {
 		this.series.set(chartSeries.id, chartSeries);
+		chartSeries.setChart(this);
 		
 		this.draw();
 	},
@@ -74,7 +81,11 @@ var GeneralChart = Class.create({
 	recalcCoordinates : function() {
 	},
 	
-	drawChart : function() { },
+	drawSeries : function() { 
+		var s = this.series.values();
+		for(var i = 0; i < s.length; i++)
+			s[i].draw();
+	},
 	
 	xOnCanvas : function(x) {
 		return Math.round((x - this.minx) / 

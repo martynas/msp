@@ -29,8 +29,11 @@ var MainApp = Class.create({
 		
 		// Constructing PSD Chart
 		this.psdChart = new PSDChart('psdChart', this);
-		this.sPSDValue = new ChartSeries();
+		this.sPSDValue = new LinearChartSeries();
 		this.psdChart.addSeries(this.sPSDValue);
+		
+		this.sPSDDots = new DotChartSeries();
+		this.psdChart.addSeries(this.sPSDDots);
 	},
 	
 	createPortfolio : function() {

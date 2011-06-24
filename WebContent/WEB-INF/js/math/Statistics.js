@@ -26,7 +26,31 @@ var Statistics = Class.create({
 			if (!maxMean || maxMean.mean < v.mean) maxMean = v;
 			if (!minStDev || minStDev.s > v.s) minStDev = v;
 		}
+		
 		this.portfolios.push(minStDev);
+		var d = (maxMean.mean - minStDev.mean) / pst_dCount;
+		if (d > 0) {
+			// Calculating possible returns for middle values
+			var varscount = this.vars.length,
+				e = Vector.Const(varscount, 1),
+				A = Matrix.Const(1, varscount, 1),
+				b = $V([1]),
+				Aeq = Matrix.Const(2, varscount, 1),
+				lb = Vector.Zero(varscount);
+			
+			for (var i = 0; i < this.vars.length; i++)
+				Aeq.elements[1][i] = this.vars[i].mean;
+			
+			for (var i = 1; i < pst_dCount; i ++) {
+				var m = minStDev.mean + d * i;
+				res = QPSolve(this.covM.dup(), e.dup(), A.dup(), b.dup(), Aeq.dup(), 
+							$V([1, m]), lb.dup());
+				
+				var s2 = $V(res).dot(this.covM.x($V(res))),
+					s = Math.sqrt(s2);
+				this.portfolios.push({mean: m, s2: s2, s: s});
+			}
+		}
 		this.portfolios.push(maxMean);
 	},
 	
@@ -62,10 +86,11 @@ var Statistics = Class.create({
 			// Creating covariance and correlation Matrices
 			this.covM = Matrix.I(varsCount);
 			this.corrM = Matrix.I(varsCount);
-			for (var i = 0; i < varsCount-1; i++) {
+			for (var i = 0; i < varsCount; i++) {
 				var els1 = this.vrMatrix.elements[i], v1 = this.vars[i];
+				this.covM.elements[i][i] = v1.s2;
 				for (var j = i+1; j < varsCount; j++) {
-					var els2 = this.vrMatrix.elements[i], cov = 0, v2 = this.vars[j];
+					var els2 = this.vrMatrix.elements[j], cov = 0, v2 = this.vars[j];
 					for (var k = 0; k < els1.length; k++)
 						cov += (els1[k] - v1.mean) * (els2[k] - v2.mean);
 					cov = cov / this.count;
